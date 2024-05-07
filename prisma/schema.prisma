@@ -9,3 +9,45 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Product {
+  id                     String   @id @default(uuid())
+  name                   String
+  priceInPkr             Int
+  category               String
+  filePath               String
+  imagepath              String
+  description            String
+  isAvailableForPurchase Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  orders                 Order[]
+  downloadVerification DownloadVerification[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id             String   @id @default(uuid())
+  pricePaidAtPkr Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String
+  productId      String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+model DownloadVerification{
+  id String @id @default(uuid())
+  expireAt DateTime
+  createdAt DateTime @default(now())
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade )
+}
