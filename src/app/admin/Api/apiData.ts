@@ -7,7 +7,7 @@ export async function getSalesData() {
     _count: true,
   });
   return {
-    amount: data._sum.pricePaidAtPkr||0,
+    amount: data._sum.pricePaidAtPkr || 0,
     numberOfSale: data._count,
   };
 }
@@ -37,4 +37,21 @@ export async function getProductData() {
     activeProduct,
     inActiveProduct,
   };
+}
+
+// Function to get products
+export async function getProducts() {
+  const result = await db.product.findMany({
+    select: {
+      id: true,
+      name: true,
+      category: true,
+      priceInPkr: true,
+      isAvailableForPurchase: true,
+      _count: { select: { orders: true } },
+    },
+    orderBy: { name: "asc" },
+  })
+  console.log(result)
+  return result;
 }

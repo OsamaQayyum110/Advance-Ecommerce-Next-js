@@ -10,18 +10,18 @@ import { currencyFormatter } from "@/lib/formatter";
 import { useFormState } from "react-dom";
 
 const ProductForm = () => {
-  const [error, action]=useFormState(addProduct, {});
-  const [priceInPKR, setPriceInPKR] = useState<number | undefined>();
+  const [error, action] = useFormState(addProduct, {});
+  const [priceInPKR, setPriceInPKR] = useState<string>("");
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
-        <Input name="name" id="name" type="text"  />
+        <Input name="name" id="name" type="text" />
         {error?.name && <div className="text-destructive">{error?.name}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="category">Category</Label>
-        <Input name="category" id="category" type="text"  />
+        <Input name="category" id="category" type="text" />
         {error?.category && <div className="text-destructive">{error?.category}</div>}
       </div>
       <div className="space-y-2">
@@ -31,11 +31,11 @@ const ProductForm = () => {
           id="priceInPKR"
           type="number"
           value={priceInPKR}
-          onChange={(e) => setPriceInPKR(Number(e.target.value) || undefined)}
+          onChange={(e) => setPriceInPKR(e.target.value)}
           required
         />
         <div className="text-muted-foreground">
-          {currencyFormatter(priceInPKR || 0)}
+          {priceInPKR && currencyFormatter(Number(priceInPKR))}
         </div>
         {error?.priceInPKR && <div className="text-destructive">{error?.priceInPKR}</div>}
       </div>

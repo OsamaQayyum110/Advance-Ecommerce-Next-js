@@ -10,7 +10,7 @@ const AdminDashboard = async () => {
     getUserData(),
   ]);
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <DashboardCard
         title={"Sales"}
         subtitle={`${numberFormatter(SaleData.numberOfSale)} Orders`}
@@ -30,7 +30,7 @@ const AdminDashboard = async () => {
         subtitle={`${numberFormatter(productData.inActiveProduct)} inactive`}
         body={`${numberFormatter(productData.activeProduct)}`}
       />
-    </>
+    </div>
   );
 };
 
