@@ -20,6 +20,11 @@ const ProductForm = () => {
         {error?.name && <div className="text-destructive">{error?.name}</div>}
       </div>
       <div className="space-y-2">
+        <Label htmlFor="category">Category</Label>
+        <Input name="category" id="category" type="text"  />
+        {error?.category && <div className="text-destructive">{error?.category}</div>}
+      </div>
+      <div className="space-y-2">
         <Label htmlFor="priceInPKR">Price</Label>
         <Input
           name="priceInPKR"
