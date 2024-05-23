@@ -29,11 +29,11 @@ export const DeleteDropdownItem = ({ id, disabled }: {id:string, disabled:boolea
     return (
         <DropdownMenuItem
         
-            disabled={isPending}
+            disabled={isPending || disabled}
             variant="destructive"
             onClick={() => {
                 startTransition(async () => {
-                    await toggleProductDelete(id, disabled)
+                    await toggleProductDelete(id)
                     router.refresh()
                 })
             }} >
