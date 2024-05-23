@@ -52,6 +52,6 @@ export async function getProducts() {
     },
     orderBy: { name: "asc" },
   })
-  console.log(result)
+  // console.log(result)
   return result;
 }

@@ -13,6 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
 import Link from "next/link";
 import { currencyFormatter, numberFormatter } from "@/lib/formatter";
+import { ActiveToggleDropdownItem, DeleteDropdownItem } from "./productAction";
 
 
 const ProductTable =async () => {
@@ -73,15 +74,15 @@ const ProductTable =async () => {
                       Edit
                     </Link>
                   </DropdownMenuItem>
-                  {/* <ActiveToggleDropdownItem
+                  <ActiveToggleDropdownItem
                     id={product.id}
                     isAvailableForPurchase={product.isAvailableForPurchase}
-                  /> */}
+                  />
                   <DropdownMenuSeparator />
-                  {/* <DeleteDropdownItem
+                  <DeleteDropdownItem
                     id={product.id}
                     disabled={product._count.orders > 0}
-                  /> */}
+                  />
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>
