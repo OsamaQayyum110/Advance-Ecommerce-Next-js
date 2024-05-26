@@ -8,9 +8,10 @@ import SubmitButton from "./SubmitButton";
 import { addProduct } from "../../_actions/products";
 import { currencyFormatter } from "@/lib/formatter";
 import { useFormState } from "react-dom";
+import { Product } from "@prisma/client";
 
-const ProductForm = () => {
-  const [error, action] = useFormState(addProduct, {});
+const ProductForm = ({ product }: { product?: Product | null }) => {
+  const [error, action] = useFormState(product ===null ? addProduct : addProduct, {});
   const [priceInPKR, setPriceInPKR] = useState<string>("");
   return (
     <form action={action} className="space-y-6">
@@ -22,7 +23,9 @@ const ProductForm = () => {
       <div className="space-y-2">
         <Label htmlFor="category">Category</Label>
         <Input name="category" id="category" type="text" />
-        {error?.category && <div className="text-destructive">{error?.category}</div>}
+        {error?.category && (
+          <div className="text-destructive">{error?.category}</div>
+        )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="priceInPKR">Price</Label>
@@ -37,12 +40,16 @@ const ProductForm = () => {
         <div className="text-muted-foreground">
           {priceInPKR && currencyFormatter(Number(priceInPKR))}
         </div>
-        {error?.priceInPKR && <div className="text-destructive">{error?.priceInPKR}</div>}
+        {error?.priceInPKR && (
+          <div className="text-destructive">{error?.priceInPKR}</div>
+        )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea name="description" id="description" />
-        {error?.description && <div className="text-destructive">{error?.description}</div>}
+        {error?.description && (
+          <div className="text-destructive">{error?.description}</div>
+        )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">File</Label>
