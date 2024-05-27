@@ -12,18 +12,34 @@ import { Product } from "@prisma/client";
 import Image from "next/image";
 
 const ProductForm = ({ product }: { product?: Product | null }) => {
-  const [error, action] = useFormState(product == null ? addProduct : updateProduct.bind(null, product.id), {});
-  const [priceInPKR, setPriceInPKR] = useState<number | undefined>(product?.priceInPkr);
+  const [error, action] = useFormState(
+    product == null ? addProduct : updateProduct.bind(null, product.id),
+    {}
+  );
+  const [priceInPKR, setPriceInPKR] = useState<number | undefined>(
+    product?.priceInPkr
+  );
+  console.log("=======>", error.file);
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
-        <Input name="name" id="name" type="text" defaultValue={product?.name || ""} />
+        <Input
+          name="name"
+          id="name"
+          type="text"
+          defaultValue={product?.name || ""}
+        />
         {error?.name && <div className="text-destructive">{error?.name}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="category">Category</Label>
-        <Input name="category" id="category" type="text" defaultValue={product?.category || ""} />
+        <Input
+          name="category"
+          id="category"
+          type="text"
+          defaultValue={product?.category || ""}
+        />
         {error?.category && (
           <div className="text-destructive">{error?.category}</div>
         )}
@@ -35,7 +51,7 @@ const ProductForm = ({ product }: { product?: Product | null }) => {
           id="priceInPKR"
           type="number"
           value={priceInPKR}
-          onChange={(e) => setPriceInPKR(Number(e.target.value)||undefined)}
+          onChange={(e) => setPriceInPKR(Number(e.target.value) || undefined)}
           defaultValue={product?.priceInPkr || ""}
           required
         />
@@ -48,24 +64,41 @@ const ProductForm = ({ product }: { product?: Product | null }) => {
       </div>
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
-        <Textarea name="description" id="description" defaultValue={product?.description} />
+        <Textarea
+          name="description"
+          id="description"
+          defaultValue={product?.description}
+        />
         {error?.description && (
           <div className="text-destructive">{error?.description}</div>
         )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">File</Label>
-        <Input name="file" id="file" type="file" accept=".docx, .pdf" required={product == null} />
-        {product != null && <div className="text-muted-foreground">{product.filePath}</div>}
-        {error?.file && <div className="text-destructive">{error?.file}</div>}
+        <Input name="file" id="file" type="file" required={product == null} />
+        {product != null && (
+          <div className="text-muted-foreground">{product.filePath}</div>
+        )}
+        
+        {error.file && <div className="text-destructive">{error.file}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
-        <Input name="image" id="image" type="file" accept="image/*" required={product == null} />
-        {product != null && <Image src={product.imagepath}
-          height="400"
-          width="400"
-          alt="Product Image" />}
+        <Input
+          name="image"
+          id="image"
+          type="file"
+          accept="image/*"
+          required={product == null}
+        />
+        {product != null && (
+          <Image
+            src={product.imagepath}
+            height="400"
+            width="400"
+            alt="Product Image"
+          />
+        )}
         {error?.image && <div className="text-destructive">{error?.image}</div>}
       </div>
       <SubmitButton />

@@ -6,21 +6,20 @@ import { string, z } from "zod";
 import fs from "fs/promises";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import Products from "../products/page";
-import { unlink } from "fs";
 
-const fileSchema = z.instanceof(File, { message: "Required" }).refine(
-  (file) => {
-    const allowedTypes = [
-      "application/pdf",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      // Add other document MIME types if needed
-    ];
-    return allowedTypes.includes(file.type);
-  },
-  { message: "Invalid file type" }
-);
+const fileSchema = z.instanceof(File, { message: "Required" })
+//   .refine(
+//   (file) => {
+//     const allowedTypes = [
+//       "application/pdf",
+//       "application/msword",
+//       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+//       // Add other document MIME types if needed
+//     ];
+//     return allowedTypes.includes(file.type);
+//   },
+//   { message: "Invalid file type" }
+// );
 
 const imageSchema = z
   .instanceof(File, { message: "Required" })
@@ -68,15 +67,18 @@ export async function addProduct(prevState: unknown, FormData: FormData) {
   });
   console.log(productResult);
   redirect("/admin/products");
-
 }
 
 const editSchema = addSchema.extend({
   file: fileSchema.optional(),
   image: imageSchema.optional(),
 });
-export async function updateProduct(id: string, prevState: unknown, formData: FormData,) {
-  console.log(FormData)
+export async function updateProduct(
+  id: string,
+  prevState: unknown,
+  formData: FormData
+) {
+  console.log(FormData);
   const result = editSchema.safeParse(Object.fromEntries(formData.entries()));
   if (result.success === false) {
     return result.error.formErrors.fieldErrors;
@@ -85,18 +87,18 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
 
   const data = result.data;
 
-  const product = await db.product.findUnique({ where: { id } })
+  const product = await db.product.findUnique({ where: { id } });
   if (product == null) return notFound();
 
-  let filePath = product.filePath
+  let filePath = product.filePath;
   if (data.file != null && data.file.size > 0) {
-    await fs.unlink(product.filePath)
-    filePath = `products/${crypto.randomUUID()}-${data.file.name}`
+    await fs.unlink(product.filePath);
+    filePath = `products/${crypto.randomUUID()}-${data.file.name}`;
     await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
   }
-  let imagepath = product.imagepath
+  let imagepath = product.imagepath;
   if (data.image != null && data.image.size > 0) {
-    await fs.unlink(`public${product.imagepath}`)
+    await fs.unlink(`public${product.imagepath}`);
     imagepath = `/products/${crypto.randomUUID()}-${data.image.name}`;
     await fs.writeFile(
       `public${imagepath}`,
@@ -113,27 +115,27 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
       description: data.description,
       filePath,
       imagepath,
-    }
-  })
+    },
+  });
 
-  revalidatePath('/')
-  revalidatePath('/products')
-  redirect("/admin/products")
-
-
+  revalidatePath("/");
+  revalidatePath("/products");
+  redirect("/admin/products");
 }
 
-
-export async function toggleProductAvailabilty(id: string, isAvailableForPurchase: boolean) {
-  await db.product.update({ where: { id }, data: { isAvailableForPurchase } })
-  revalidatePath("/")
-  revalidatePath("/products")
+export async function toggleProductAvailabilty(
+  id: string,
+  isAvailableForPurchase: boolean
+) {
+  await db.product.update({ where: { id }, data: { isAvailableForPurchase } });
+  revalidatePath("/");
+  revalidatePath("/products");
 }
 export async function toggleProductDelete(id: string) {
-  const product = await db.product.delete({ where: { id } })
+  const product = await db.product.delete({ where: { id } });
   if (product == null) return notFound();
-  await fs.unlink(product.filePath)
-  await fs.unlink(`public${product.imagepath}`)
-  revalidatePath("/")
-  revalidatePath("/products")
+  await fs.unlink(product.filePath);
+  await fs.unlink(`public${product.imagepath}`);
+  revalidatePath("/");
+  revalidatePath("/products");
 }
