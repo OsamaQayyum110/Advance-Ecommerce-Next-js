@@ -1,27 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isValidPassword } from "./lib/isValidPassword";
+import { promise } from "zod";
 
 export async function middleware(req: NextRequest) {
-    console.log("Request ===========>",req)
-    if ((await isAuthenticated(req)) === false) {
-        return new NextResponse("Unauthorized", {
-            status: 401,
-            headers: { "WWW-Authenticate": "Basic" },
-          })
-    }
-
+//   console.log("Request ===========>", req);
+  if ((await isAuthenticated(req)) === false) {
+    return new NextResponse("Unauthorized", {
+      status: 401,
+      headers: { "WWW-Authenticate": "Basic" },
+    });
+  }
 }
 
 export async function isAuthenticated(req: NextRequest) {
-    const authHeader = req.headers.get("authorization") || req.headers.get("Authorization")
-    console.log("authHeader ===========>",authHeader)
-    if (authHeader == null) return false;
+  const authHeader =
+    req.headers.get("authorization") || req.headers.get("Authorization");
+  // console.log("authHeader ===========>",authHeader)
+  if (authHeader == null) return false;
 
-    const [username, password] = Buffer.from(authHeader.split(" ")[1], "base64").toString().split(":")
+  const [username, password] = Buffer.from(authHeader.split(" ")[1], "base64")
+    .toString()
+        .split(":");
+    isValidPassword(password,"sadasdasd")
 
-    return (username === process.env.ADMIN_NAME && (await isValidPassword(password, process.env.ADMIN_PASSWORD as string)))
+    return (
+    //   Promise.resolve(false)
+    username === process.env.ADMIN_NAME &&
+    (await isValidPassword(password, process.env.ADMIN_PASSWORD as string))
+  );
 }
 
 export const config = {
-    matcher: "/admin/:path*",
-}
+  matcher: "/admin/:path*",
+};
