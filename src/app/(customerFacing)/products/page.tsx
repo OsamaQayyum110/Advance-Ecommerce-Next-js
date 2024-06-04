@@ -13,6 +13,9 @@ export default function Products() {
             <ProductCardSkeleton />
             <ProductCardSkeleton />
             <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
           </>
         }
       >
