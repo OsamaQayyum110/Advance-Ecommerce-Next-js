@@ -11,18 +11,18 @@ datasource db {
 }
 
 model Product {
-  id                     String   @id @default(uuid())
+  id                     String                 @id @default(uuid())
   name                   String
   priceInPkr             Int
   category               String
   filePath               String
   imagepath              String
   description            String
-  isAvailableForPurchase Boolean  @default(true)
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  isAvailableForPurchase Boolean                @default(true)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
   orders                 Order[]
-  downloadVerification DownloadVerification[]
+  downloadVerification   DownloadVerification[]
 }
 
 model User {
@@ -44,10 +44,10 @@ model Order {
   product        Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
 }
 
-model DownloadVerification{
-  id String @id @default(uuid())
-  expireAt DateTime
+model DownloadVerification {
+  id        String   @id @default(uuid())
+  expireAt  DateTime
   createdAt DateTime @default(now())
   productId String
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade )
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
