@@ -51,7 +51,21 @@ export async function getProducts() {
       _count: { select: { orders: true } },
     },
     orderBy: { name: "asc" },
-  })
+  });
   // console.log(result)
+  return result;
+}
+
+export async function getUser() {
+  const result = await db.user.findMany({
+    select: {
+      id: true,
+      email: true,
+      createdAt: true,
+      orders: { select: { pricePaidAtPkr: true } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  console.log("result Users ====>", JSON.stringify(result, null, 2));
   return result;
 }
