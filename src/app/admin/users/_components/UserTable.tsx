@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { MoreVertical } from 'lucide-react';
-import { ActiveToggleDropdownItem, DeleteDropdownItem } from '../../products/_components/productAction';
 import { currencyFormatter, numberFormatter } from '@/lib/formatter';
+import  {DeleteDropdownItem}  from './userAction';
 
 const UserTable = async () => {
     const users = await getUser();
@@ -45,7 +45,7 @@ const UserTable = async () => {
                   <span className="sr-only">Actions</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  {/* <DeleteDropdownItem id={user.id} /> */}
+                  <DeleteDropdownItem id={user.id} disabled={users.length <= 0} />
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>
