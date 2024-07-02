@@ -15,7 +15,8 @@ import { currencyFormatter, numberFormatter } from '@/lib/formatter';
 import  {DeleteDropdownItem}  from './userAction';
 
 const UserTable = async () => {
-    const users = await getUser();
+  const users = await getUser();
+  if (users.length === 0) return <p>No customers found</p>;
   return (
     <Table>
       <TableHeader>
@@ -45,7 +46,7 @@ const UserTable = async () => {
                   <span className="sr-only">Actions</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DeleteDropdownItem id={user.id} disabled={users.length <= 0} />
+                  <DeleteDropdownItem id={user.id} />
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>

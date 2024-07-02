@@ -5,14 +5,14 @@ import { useTransition } from "react";
 import { DeleteUser } from "../../_actions/users";
 
 
-export const DeleteDropdownItem = ({ id, disabled }: {id:string, disabled:boolean  }) => {
+export const DeleteDropdownItem = ({ id }: {id:string  }) => {
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
 
     return (
         <DropdownMenuItem
         
-            disabled={isPending || disabled}
+            disabled={isPending}
             variant="destructive"
             onClick={() => {
                 startTransition(async () => {

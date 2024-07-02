@@ -17,7 +17,7 @@ export async function GET(
     return NextResponse.redirect(
       new URL("/products/download/expired", req.url)
     );
-  }
+  }                                                                                                                                                      
 
   const { size } = await fs.stat(data.product.filePath);
   const file = await fs.readFile(data.product.filePath);

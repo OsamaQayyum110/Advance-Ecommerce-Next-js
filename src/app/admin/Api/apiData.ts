@@ -66,6 +66,6 @@ export async function getUser() {
     },
     orderBy: { createdAt: "desc" },
   });
-  console.log("result Users ====>", JSON.stringify(result, null, 2));
+  //console.log("result Users ====>", JSON.stringify(result, null, 2));
   return result;
 }
